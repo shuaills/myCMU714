@@ -29,7 +29,7 @@ class AddScalar(TensorOp):
     def __init__(self, scalar):
         self.scalar = scalar
 
-    def compute(self, a: NDArray):
+    def compute(self, a: NDArray): 
         return a + self.scalar
 
     def gradient(self, out_grad: Tensor, node: Tensor):
@@ -45,8 +45,8 @@ class EWiseMul(TensorOp):
         return a * b
 
     def gradient(self, out_grad: Tensor, node: Tensor):
-        lhs, rhs = node.inputs
-        return out_grad * rhs, out_grad * lhs
+        a, b = node.inputs
+        return out_grad * a, out_grad * b
 
 
 def multiply(a, b):
