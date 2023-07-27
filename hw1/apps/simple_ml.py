@@ -107,6 +107,45 @@ def nn_epoch(X, y, W1, W2, lr = 0.1, batch=100):
         W2 = ndl.Tensor(W2.realize_cached_data() - lr * W2.grad.realize_cached_data())
     return W1, W2
     ### END YOUR SOLUTION
+# 我们的计算图：
+# x -> ReLU(x*w1+b1) = h -> ReLU(h*w2+b2) = y -> (y-target)^2 = L
+
+# 我们有以下参数和数据：
+# 输入 x = 2.0
+# 目标值 target = 1.0
+# 权重和偏置初始值：w1 = 0.5, b1 = 0.1, w2 = 0.6, b2 = 0.2
+
+# 前向传播过程：
+# h = ReLU(x * w1 + b1) = ReLU(2.0 * 0.5 + 0.1) = ReLU(1.1) = 1.1
+# y = ReLU(h * w2 + b2) = ReLU(1.1 * 0.6 + 0.2) = ReLU(0.86) = 0.86
+# L = (y - target)^2 = (0.86 - 1.0)^2 = 0.0196
+
+# 接下来我们计算各个参数的梯度。
+# 对于输出层：
+# dL/dy = 2*(y-target) = 2*(0.86-1.0) = -0.28
+# dL/dw2 = dL/dy * dh/dw2 = dL/dy * h = -0.28 * 1.1 = -0.308
+# dL/db2 = dL/dy = -0.28
+# dL/dh = dL/dy * dy/dh = dL/dy * w2 = -0.28 * 0.6 = -0.168
+
+# 对于隐藏层：
+# dL/dw1 = dL/dh * dx/dw1 = dL/dh * x = -0.168 * 2.0 = -0.336
+# dL/db1 = dL/dh = -0.168
+
+# 接下来，我们会用这些梯度来更新我们的权重和偏置。
+
+# 接下来我们需要选择一个学习率（learning rate）来进行参数更新。假设我们选择学习率为0.1。
+# 参数更新的公式是：新参数 = 旧参数 - 学习率 * 梯度。所以我们有：
+# w1_new = w1 - learning_rate * dL/dw1 = 0.5 - 0.1 * -0.336 = 0.5336
+# b1_new = b1 - learning_rate * dL/db1 = 0.1 - 0.1 * -0.168 = 0.1168
+# w2_new = w2 - learning_rate * dL/dw2 = 0.6 - 0.1 * -0.308 = 0.6308
+# b2_new = b2 - learning_rate * dL/db2 = 0.2 - 0.1 * -0.28 = 0.228
+
+# 那么，更新后的权重和偏置值为：w1 = 0.5336，b1 = 0.1168，w2 = 0.6308，b2 = 0.228。
+# 这就是我们进行一次梯度下降后的结果。在神经网络训练中，我们会重复这个过程多次（即多个"epoch"），
+# 每次都基于当前的梯度来更新我们的权重和偏置，最终希望得到一个能够最小化损失的模型。
+
+
+
 
 
 ### CODE BELOW IS FOR ILLUSTRATION, YOU DO NOT NEED TO EDIT
