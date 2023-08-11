@@ -43,7 +43,7 @@ CudaDims CudaOneDim(size_t size) {
   return dim;
 }
 
-#define MAX_VEC_SIZE 8
+#define MAX_VEC_SIZE 16
 struct CudaVec {
   uint32_t size;
   uint32_t data[MAX_VEC_SIZE];
